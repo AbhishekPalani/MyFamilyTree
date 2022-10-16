@@ -22,7 +22,8 @@ def make_node(person):
 
     format_string = "\t{0}[label=\"{1}\",style=filled,fillcolor={2}];\r\n".format(ID,
                                                                                   formatDOB_DOD(PERSON, DOB, DOD)
-                                                                                  + "\r\n" + notes(NOTES), color)
+                                                                                  #+ "\r\n" + notes(NOTES)
+                                                                                  , color)
     return format_string
 
 
@@ -119,11 +120,11 @@ def main():
                                      'Generates a family tree graph from a spreadsheet')
     parser.add_argument('-a', dest='ancestor_id',
                         help='Enter Ancestor ID from the spreadsheet')
-    parser.add_argument('input', metavar='INPUTFILE', default='ArunachalamFamily.xlsx',
+    parser.add_argument('input', metavar='INPUTFILE', default='KumaraguruFamily.xlsx',
                         help='File Path of the formatted spreadsheet')
     args = parser.parse_args()
 
-    dotText = "digraph {\n\tgraph [rankdir=TB, splines=ortho];\n\tnode [shape=plaintext];\n\tedge [dir=none];\n\n"
+    dotText = "digraph {\n\tgraph [rankdir=LR, splines=ortho];\n\tnode [shape=plaintext, fontname=arial];\n\tedge [dir=none];\n\n"
     readExcel(args.ancestor_id, args.input)
     dotText += string_nodes + "\r\n}"
     print(dotText)
