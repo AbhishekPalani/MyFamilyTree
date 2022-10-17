@@ -11,4 +11,4 @@ Like any github repos, contributors must work on own branch and create a pull re
 - Graphviz - Download from http://www.graphviz.org/download/
 - CSV Editor - Microsoft Office Excel or Google Sheets
 ### Command to run locally:
-```python src\familyTreeGenerator.py 137 src\KumaraguruFamily.xlsx | dot -Tsvg > index.html```
+``` python src\familyTreeGenerator.py -a 137 src\KumaraguruFamily.csv | dot -Tsvg -Grankdir=LR -Ecolor=azure4 -Nwidth=3 -Ncolor=azure4  > index.html ```
