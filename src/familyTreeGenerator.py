@@ -1,5 +1,5 @@
-from pandas import ExcelFile
 import argparse
+import pandas as pd
 
 string_nodes = ""
 
@@ -10,20 +10,13 @@ def make_node(person):
 
     ID = person.get('ID')
     PERSON = person.get('PERSON')
-    DOB = person.get('DOB')
-    DOD = person.get('DOD')
-    NOTES = person.get('NOTES')
     GENDER = person.get('GENDER')
-    SPOUSE = person.get('SPOUSE')
     if GENDER != "F":
-        color = 'lightblue'
+        color = "lightskyblue"
     else:
-        color = 'pink'
+        color = 'lightpink'
 
-    format_string = "\t{0}[label=\"{1}\",style=filled,fillcolor={2}];\r\n".format(ID,
-                                                                                  formatDOB_DOD(PERSON, DOB, DOD)
-                                                                                  #+ "\r\n" + notes(NOTES)
-                                                                                  , color)
+    format_string = "\t{0}[label=\"{1}\",style=filled,fillcolor={2}];\r\n".format(ID, PERSON, color)
     return format_string
 
 
@@ -50,12 +43,9 @@ def find_relation(node):
     "Find Spouse(s) and Child(ren)"
 
 
-def readExcel(ancestor_id, input):
-    "Read Excel here"
-
-    xls = ExcelFile(input)
-    df = xls.parse(xls.sheet_names[0])
-    # df = df.transpose()
+def readCSV(ancestor_id, input):
+    "Read CSV here"
+    df = pd.read_csv(input)
     family_list = df.to_dict('records')
     return find_ancestor(int(ancestor_id), family_list)
 
@@ -117,15 +107,15 @@ def main():
     "Entry point of the program when called as a script."
 
     parser = argparse.ArgumentParser(description=
-                                     'Generates a family tree graph from a spreadsheet')
+                                     'Generates a family tree graph from a csv')
     parser.add_argument('-a', dest='ancestor_id',
-                        help='Enter Ancestor ID from the spreadsheet')
-    parser.add_argument('input', metavar='INPUTFILE', default='KumaraguruFamily.xlsx',
-                        help='File Path of the formatted spreadsheet')
+                        help='Enter Ancestor ID from the csv')
+    parser.add_argument('input', metavar='INPUTFILE', default='KumaraguruFamily.csv',
+                        help='File Path of the formatted csv')
     args = parser.parse_args()
 
-    dotText = "digraph {\n\tgraph [rankdir=LR, splines=ortho];\n\tnode [shape=plaintext, fontname=arial];\n\tedge [dir=none];\n\n"
-    readExcel(args.ancestor_id, args.input)
+    dotText = "digraph {\n\tgraph [rankdir=LR, splines=ortho];\n\tnode [shape=plaintext, fontname=tahoma];\n\tedge [dir=none];\n\n"
+    readCSV(args.ancestor_id, args.input)
     dotText += string_nodes + "\r\n}"
     print(dotText)
 
